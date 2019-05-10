@@ -1,23 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import Board from "./Board";
+import {toPosition} from "./lib";
+
+function getNextBoard(board, position, move){
+    const nextBoard = [...board];
+    nextBoard[position] = move;
+    return nextBoard
+}
 
 function App() {
+    const [board, setBoard] = useState(["","X", "O", "", "", "", "O", "", ""])
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Play tris!
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+          <Board className={"trisBoard"} data={board} move={(row, column) => setBoard(getNextBoard(board, toPosition(row, column), "X"))}/>
       </header>
     </div>
   );
