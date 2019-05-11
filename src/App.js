@@ -63,7 +63,7 @@ function App() {
                        move={getMove}/>
                 {winner && <p>Congratulations player {winner}!</p>}
                 {boardIsFull && !winner && <p>Nobody won, as always</p>}
-                {boardIsFull || winner ? <p onClick={resetGame}>play again</p> : null}
+                {boardIsFull || winner ? <p onClick={resetGame}>Play again</p> : null}
             </header>
         </div>
     );
