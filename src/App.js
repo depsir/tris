@@ -14,18 +14,31 @@ function toggleMove(move) {
 }
 
 /* TODO
-- play again
-- already occupied cell
 - game ended
+- play again
  */
 
+function cellIsOccuped(cell){
+    return cell !== "";
+}
+
 function App() {
-    const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
+    let initialState = ["", "", "", "", "", "", "", "", ""];
+    const [board, setBoard] = useState(initialState);
     const [move, setMove] = useState("X");
     const [winner, setWinner] = useState(undefined);
 
+
+    const boardIsFull = board.every(cellIsOccuped);
+
     const getMove = (row, column) => {
-        const nextBoard = getNextBoard(board, toPosition(row, column), move);
+        let position = toPosition(row, column);
+
+        if (cellIsOccuped(board[position])) return;
+        if (winner) return;
+        if (boardIsFull) return;
+
+        const nextBoard = getNextBoard(board, position, move);
         setBoard(nextBoard);
         const currentWinner = getWinner(nextBoard);
         if (currentWinner) {
@@ -33,6 +46,12 @@ function App() {
         }
         setMove(toggleMove(move))
     };
+
+    function resetGame(){
+        setBoard(initialState);
+        setMove("X");
+        setWinner(undefined)
+    }
 
     return (
         <div className="App">
@@ -43,6 +62,8 @@ function App() {
                 <Board className={"trisBoard"} data={board}
                        move={getMove}/>
                 {winner && <p>Congratulations player {winner}!</p>}
+                {boardIsFull && !winner && <p>Nobody won, as always</p>}
+                {boardIsFull || winner ? <p onClick={resetGame}>play again</p> : null}
             </header>
         </div>
     );
