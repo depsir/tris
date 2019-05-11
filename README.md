@@ -1,1 +1,2 @@
-A tris implementation example
+A tris implementation example.
+
