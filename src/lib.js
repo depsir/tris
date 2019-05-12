@@ -1,21 +1,17 @@
-export function toPosition(row, column){
-    return row*3 + column;
-}
-
 export function getRow(row, board){
-    return [board[row*3], board[row*3+1], board[row*3+2]];
+    return board[row];
 }
 
 export function getColumn(column, board){
-    return [board[column], board[3+column], board[6+column]];
+    return board.map(row => row[column])
 }
 
 export function getDiagonalOne(board){ // \
-    return [board[0], board[4], board[8]]
+    return [board[0][2], board[1][1], board[2][0]]
 }
 
 export function getDiagonalTwo(board){ // \
-   return [board[2], board[4], board[6]]
+    return [board[0][0], board[1][1], board[2][2]]
 }
 
 function isWinning(threeCells) {

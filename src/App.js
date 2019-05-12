@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import './App.css';
 import Board from "./Board";
-import {getWinner, toPosition} from "./lib";
+import {getWinner} from "./lib";
 
-function getNextBoard(board, position, move) {
+function getNextBoard(board, row, column, move) {
     const nextBoard = [...board];
-    nextBoard[position] = move;
+    nextBoard[row][column] = move;
     return nextBoard
 }
 
@@ -13,32 +13,24 @@ function toggleMove(move) {
     return move === 'X' ? 'O' : 'X';
 }
 
-/* TODO
-- game ended
-- play again
- */
-
-function cellIsOccuped(cell){
+function cellIsOccuped(cell) {
     return cell !== "";
 }
 
 function App() {
-    let initialState = ["", "", "", "", "", "", "", "", ""];
+    let initialState = [["", "", ""], ["", "", ""], ["", "", ""]];
     const [board, setBoard] = useState(initialState);
     const [move, setMove] = useState("X");
     const [winner, setWinner] = useState(undefined);
 
-
-    const boardIsFull = board.every(cellIsOccuped);
+    const boardIsFull = board.reduce((ac, el) => ac.concat(el)).every(cellIsOccuped);
 
     const getMove = (row, column) => {
-        let position = toPosition(row, column);
-
-        if (cellIsOccuped(board[position])) return;
+        if (cellIsOccuped(board[row][column])) return;
         if (winner) return;
         if (boardIsFull) return;
 
-        const nextBoard = getNextBoard(board, position, move);
+        const nextBoard = getNextBoard(board, row, column, move);
         setBoard(nextBoard);
         const currentWinner = getWinner(nextBoard);
         if (currentWinner) {
@@ -47,7 +39,7 @@ function App() {
         setMove(toggleMove(move))
     };
 
-    function resetGame(){
+    function resetGame() {
         setBoard(initialState);
         setMove("X");
         setWinner(undefined)
